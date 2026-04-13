@@ -1,20 +1,35 @@
-# React + Vite
+# AI Playlist - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+분위기를 입력하면 AI가 Spotify 플레이리스트를 추천해주는 웹 애플리케이션의 프론트엔드입니다.
 
-Currently, two official plugins are available:
+## 기술 스택
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19**
+- **Vite 8**
+- **CSS Modules**
 
-## React Compiler
+## 주요 기능
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 분위기/감정 텍스트 입력으로 플레이리스트 생성 요청
+- 예시 프롬프트 칩 버튼 제공
+- 곡 수 선택 (5 / 10 / 15 / 20곡)
+- 결과 표시 시 폼(왼쪽) + 트랙 리스트(오른쪽) 2컬럼 레이아웃
+- 900px 이하 반응형 세로 배치
+- Spotify 트랙 링크 연결
 
-## Expanding the ESLint configuration
+## 백엔드 연동
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+백엔드 서버(`localhost:8080`)와 Vite 프록시로 연결됩니다.
 
-# playlist-front
+- API: `POST /api/v1/playlist`
+- Request: `{ prompt: string, songCount: number }`
+- Response: `{ playlistTitle: string, tracks: Track[] }`
 
-개인 프로젝트 프론트엔드(AI 활용)
+## 실행 방법
+
+```bash
+npm install
+npm run dev
+```
+
+> 백엔드 서버가 먼저 실행 중이어야 합니다.

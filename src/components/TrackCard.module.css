@@ -1,9 +1,9 @@
 .card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 16px;
-  border-radius: 10px;
+  gap: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
   transition: background 0.15s;
 }
 
@@ -24,23 +24,23 @@
 }
 
 .albumImg {
-  border-radius: 6px;
+  border-radius: 5px;
   display: block;
-  height: 52px;
+  height: 43px;
   object-fit: cover;
-  width: 52px;
+  width: 43px;
 }
 
 .albumPlaceholder {
   align-items: center;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  border-radius: 5px;
   color: rgba(255, 255, 255, 0.3);
   display: flex;
-  font-size: 20px;
-  height: 52px;
+  font-size: 16px;
+  height: 38px;
   justify-content: center;
-  width: 52px;
+  width: 38px;
 }
 
 .info {
@@ -52,7 +52,7 @@
   color: #fff;
   font-size: 14px;
   font-weight: 600;
-  margin: 0 0 3px;
+  margin: 0 0 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -61,19 +61,14 @@
 .artist {
   color: rgba(255, 255, 255, 0.6);
   font-size: 13px;
-  margin: 0 0 2px;
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .album {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 12px;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: none;
 }
 
 .spotifyBtn {
@@ -82,7 +77,9 @@
   align-items: center;
   flex-shrink: 0;
   opacity: 0;
-  transition: opacity 0.15s, transform 0.15s;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
 }
 
 .card:hover .spotifyBtn {

@@ -1,0 +1,95 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.index {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 14px;
+  min-width: 22px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.albumWrap {
+  flex-shrink: 0;
+}
+
+.albumImg {
+  border-radius: 6px;
+  display: block;
+  height: 52px;
+  object-fit: cover;
+  width: 52px;
+}
+
+.albumPlaceholder {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  font-size: 20px;
+  height: 52px;
+  justify-content: center;
+  width: 52px;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artist {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  margin: 0 0 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.album {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 12px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spotifyBtn {
+  color: #1db954;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.card:hover .spotifyBtn {
+  opacity: 1;
+}
+
+.spotifyBtn:hover {
+  transform: scale(1.15);
+  color: #1ed760;
+}

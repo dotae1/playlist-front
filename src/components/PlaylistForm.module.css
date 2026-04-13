@@ -1,0 +1,163 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.textareaWrapper {
+  position: relative;
+}
+
+.textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 16px;
+  resize: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #1db954;
+}
+
+.textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exampleChip {
+  background: rgba(29, 185, 84, 0.1);
+  border: 1px solid rgba(29, 185, 84, 0.3);
+  border-radius: 20px;
+  color: #1db954;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 6px 14px;
+  transition: background 0.2s, border-color 0.2s;
+  font-family: inherit;
+}
+
+.exampleChip:hover:not(:disabled) {
+  background: rgba(29, 185, 84, 0.2);
+  border-color: #1db954;
+}
+
+.exampleChip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.countControl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.countLabel {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+}
+
+.countButtons {
+  display: flex;
+  gap: 6px;
+}
+
+.countBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 6px 12px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.countBtn:hover:not(:disabled) {
+  border-color: rgba(29, 185, 84, 0.5);
+  color: #fff;
+}
+
+.countBtnActive {
+  background: rgba(29, 185, 84, 0.15);
+  border-color: #1db954;
+  color: #1db954;
+}
+
+.countBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.submitBtn {
+  background: #1db954;
+  border: none;
+  border-radius: 50px;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 28px;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #1ed760;
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.submitBtn:disabled {
+  background: rgba(29, 185, 84, 0.3);
+  color: rgba(0, 0, 0, 0.4);
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

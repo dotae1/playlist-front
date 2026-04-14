@@ -131,7 +131,7 @@
 }
 
 .heroLeft {
-  flex: 0 0 480px;
+  flex: 0 0 580px;
   display: flex;
   flex-direction: column;
   gap: 16px;

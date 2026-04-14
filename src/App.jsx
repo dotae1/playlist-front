@@ -74,14 +74,14 @@ export default function App() {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
 
-  const handleSubmit = async ({ prompt, songCount }) => {
+  const handleSubmit = async ({ prompt, songCount, category }) => {
     setLoading(true);
     setError(null);
     setPlaylist(null);
     setPage(1);
 
     try {
-      const data = await createPlaylist({ prompt, songCount });
+      const data = await createPlaylist({ prompt, songCount, category });
       setPlaylist(data);
     } catch (err) {
       setError(err.message || '플레이리스트 생성 중 오류가 발생했습니다.');

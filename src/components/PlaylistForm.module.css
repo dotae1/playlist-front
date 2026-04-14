@@ -4,8 +4,55 @@
   gap: 16px;
 }
 
+.inputRow {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.categoryButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.categoryBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 12px;
+  flex: 1;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+.categoryBtn:hover:not(:disabled) {
+  border-color: rgba(29, 185, 84, 0.5);
+  color: #fff;
+  background: rgba(29, 185, 84, 0.08);
+}
+
+.categoryBtnActive {
+  background: rgba(29, 185, 84, 0.15);
+  border-color: #1db954;
+  color: #1db954;
+}
+
+.categoryBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .textareaWrapper {
   position: relative;
+  flex: 1;
 }
 
 .textarea {

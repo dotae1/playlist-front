@@ -44,6 +44,93 @@
   50% { transform: translate(30px, 20px); }
 }
 
+/* ── 헤더 ── */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+  background: rgba(8, 8, 16, 0.75);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.headerLogo {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1db954;
+  text-decoration: none;
+  letter-spacing: -0.3px;
+}
+
+.headerLogo:hover {
+  opacity: 0.85;
+}
+
+.headerNav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerLoginBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 16px;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.headerLoginBtn:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+.headerSignupBtn {
+  background: linear-gradient(135deg, #1db954, #17a349);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 16px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.headerSignupBtn:hover {
+  opacity: 0.88;
+}
+
+.headerLogoutBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  border-radius: 8px;
+  color: rgba(255, 100, 100, 0.8);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.headerLogoutBtn:hover {
+  border-color: rgba(255, 80, 80, 0.6);
+  color: #ff6b6b;
+  background: rgba(255, 80, 80, 0.07);
+}
+
 /* ── 히어로 ── */
 .hero {
   position: relative;
@@ -52,7 +139,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 24px 80px;
+  padding: 100px 24px 80px;
 }
 
 .heroInner {

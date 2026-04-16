@@ -1,0 +1,403 @@
+/* ── 기본 레이아웃 ── */
+.root {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background: #080810;
+  z-index: 0;
+}
+
+.orb1 {
+  position: fixed;
+  top: -20vh;
+  left: -10vw;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(29, 185, 84, 0.10) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orb2 {
+  position: fixed;
+  bottom: -10vh;
+  right: -10vw;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(100, 60, 255, 0.08) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── 컨테이너 ── */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ── 로고 ── */
+.logoArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1db954;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.logo:hover {
+  opacity: 0.85;
+}
+
+.logoSub {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  margin: 0;
+}
+
+/* ── 카드 ── */
+.card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 24px;
+  padding: 36px 32px;
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.sub {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  margin: -16px 0 0;
+  text-align: center;
+}
+
+/* ── 진행 단계 ── */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.stepActive {
+  color: #1db954;
+}
+
+.stepDone {
+  color: #1db954;
+}
+
+.stepNum {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.stepActive .stepNum {
+  background: rgba(29, 185, 84, 0.15);
+  border-color: #1db954;
+  color: #1db954;
+}
+
+.stepDone .stepNum {
+  background: #1db954;
+  border-color: #1db954;
+  color: #000;
+}
+
+.stepLine {
+  width: 60px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 8px;
+  margin-bottom: 20px;
+}
+
+/* ── 폼 ── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.required {
+  color: #ff6b6b;
+}
+
+.input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.input:focus {
+  border-color: rgba(29, 185, 84, 0.5);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── 인라인 버튼 (이메일 입력 옆) ── */
+.inputRow {
+  display: flex;
+  gap: 8px;
+}
+
+.inputRow .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.inlineBtn {
+  flex-shrink: 0;
+  background: rgba(29, 185, 84, 0.12);
+  border: 1px solid rgba(29, 185, 84, 0.35);
+  border-radius: 10px;
+  color: #1db954;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.inlineBtn:hover:not(:disabled) {
+  background: rgba(29, 185, 84, 0.2);
+}
+
+.inlineBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── 인증 완료 배지 ── */
+.verifiedBadge {
+  background: rgba(29, 185, 84, 0.1);
+  border: 1px solid rgba(29, 185, 84, 0.3);
+  border-radius: 10px;
+  color: #1db954;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 14px;
+  text-align: center;
+}
+
+/* ── 성별 선택 ── */
+.genderRow {
+  display: flex;
+  gap: 10px;
+}
+
+.genderBtn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-family: inherit;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.genderBtn:hover {
+  border-color: rgba(29, 185, 84, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.genderBtnActive {
+  background: rgba(29, 185, 84, 0.12);
+  border-color: #1db954;
+  color: #1db954;
+  font-weight: 600;
+}
+
+/* ── 버튼 행 ── */
+.btnRow {
+  display: flex;
+  gap: 10px;
+}
+
+.backBtn {
+  flex: 0 0 80px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-family: inherit;
+  padding: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── 제출 버튼 ── */
+.submitBtn {
+  flex: 1;
+  background: linear-gradient(135deg, #1db954, #17a349);
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 13px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.submitBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── 메시지 ── */
+.error {
+  background: rgba(255, 80, 80, 0.08);
+  border: 1px solid rgba(255, 80, 80, 0.25);
+  border-radius: 10px;
+  color: #ff6b6b;
+  font-size: 13px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.success {
+  background: rgba(29, 185, 84, 0.08);
+  border: 1px solid rgba(29, 185, 84, 0.25);
+  border-radius: 10px;
+  color: #1db954;
+  font-size: 13px;
+  padding: 11px 14px;
+  text-align: center;
+}
+
+/* ── 전환 링크 ── */
+.switchText {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 13px;
+  margin: 0;
+}
+
+.switchLink {
+  color: #1db954;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.switchLink:hover {
+  text-decoration: underline;
+}
+
+/* ── 반응형 ── */
+@media (max-width: 480px) {
+  .card {
+    padding: 28px 20px;
+  }
+
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+}

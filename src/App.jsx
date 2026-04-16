@@ -1,7 +1,12 @@
 import { useState } from 'react';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import { logout } from './api/authApi';
 import { createPlaylist } from './api/playlistApi';
 import PlaylistForm from './components/PlaylistForm';
 import TrackCard from './components/TrackCard';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import styles from './App.module.css';
 
 const EXAMPLES = [
@@ -68,11 +73,24 @@ const FEATURES = [
 
 const PAGE_SIZE = 10;
 
-export default function App() {
+function MainPage() {
   const [loading, setLoading] = useState(false);
   const [playlist, setPlaylist] = useState(null);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
+  const { isLoggedIn, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      // 서버 오류와 무관하게 로컬 상태는 초기화
+    } finally {
+      signOut();
+      navigate('/login');
+    }
+  };
 
   const handleSubmit = async ({ prompt, songCount, category }) => {
     setLoading(true);
@@ -100,6 +118,21 @@ export default function App() {
       <div className={styles.bg} />
       <div className={styles.orb1} />
       <div className={styles.orb2} />
+
+      {/* 네비게이션 헤더 */}
+      <header className={styles.header}>
+        <Link to="/" className={styles.headerLogo}>AI Playlist</Link>
+        <div className={styles.headerNav}>
+          {isLoggedIn ? (
+            <button className={styles.headerLogoutBtn} onClick={handleLogout}>로그아웃</button>
+          ) : (
+            <>
+              <Link to="/login" className={styles.headerLoginBtn}>로그인</Link>
+              <Link to="/signup" className={styles.headerSignupBtn}>회원가입</Link>
+            </>
+          )}
+        </div>
+      </header>
 
       {/* 히어로 섹션 */}
       <section className={styles.hero}>
@@ -248,5 +281,15 @@ export default function App() {
         <p>AI Playlist · Gemini AI × Spotify</p>
       </footer>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+    </Routes>
   );
 }

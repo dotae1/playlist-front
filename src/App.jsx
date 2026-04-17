@@ -7,6 +7,8 @@ import PlaylistForm from './components/PlaylistForm';
 import TrackCard from './components/TrackCard';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import ProfileCompletePage from './pages/ProfileCompletePage';
+import ProtectedRoute from './components/ProtectedRoute';
 import styles from './App.module.css';
 
 const EXAMPLES = [
@@ -78,7 +80,7 @@ function MainPage() {
   const [playlist, setPlaylist] = useState(null);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const { isLoggedIn, signOut } = useAuth();
+  const { isLoggedIn, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -93,6 +95,10 @@ function MainPage() {
   };
 
   const handleSubmit = async ({ prompt, songCount, category }) => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
     setLoading(true);
     setError(null);
     setPlaylist(null);
@@ -123,7 +129,7 @@ function MainPage() {
       <header className={styles.header}>
         <Link to="/" className={styles.headerLogo}>AI Playlist</Link>
         <div className={styles.headerNav}>
-          {isLoggedIn ? (
+          {authLoading ? null : isLoggedIn ? (
             <button className={styles.headerLogoutBtn} onClick={handleLogout}>로그아웃</button>
           ) : (
             <>
@@ -290,6 +296,7 @@ export default function App() {
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/profile/complete" element={<ProfileCompletePage />} />
     </Routes>
   );
 }

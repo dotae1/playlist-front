@@ -391,6 +391,74 @@
   text-decoration: underline;
 }
 
+/* ── 소셜 로그인 구분선 ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dividerText {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ── 소셜 버튼 ── */
+.socialGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  border: none;
+}
+
+.socialBtn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.socialBtn:active {
+  transform: translateY(0);
+}
+
+.socialIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.googleBtn {
+  background: #fff;
+  color: #3c4043;
+}
+
+.spotifyBtn {
+  background: #1db954;
+  color: #000;
+}
+
 /* ── 반응형 ── */
 @media (max-width: 480px) {
   .card {

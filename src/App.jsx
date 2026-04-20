@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { logout } from './api/authApi';
-import { createPlaylist } from './api/playlistApi';
+import { createPlaylist, saveAsNewPlaylist, saveToExistingPlaylist } from './api/playlistApi';
 import PlaylistForm from './components/PlaylistForm';
 import TrackCard from './components/TrackCard';
+import SpotifySaveModal from './components/SpotifySaveModal';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfileCompletePage from './pages/ProfileCompletePage';
@@ -78,8 +79,16 @@ const PAGE_SIZE = 10;
 function MainPage() {
   const [loading, setLoading] = useState(false);
   const [playlist, setPlaylist] = useState(null);
+  const [prompt, setPrompt] = useState('');
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
+
+  // Spotify 저장 관련 상태
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(null); // 성공 메시지
+  const [saveError, setSaveError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const { isLoggedIn, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -94,7 +103,7 @@ function MainPage() {
     }
   };
 
-  const handleSubmit = async ({ prompt, songCount, category }) => {
+  const handleSubmit = async ({ prompt: inputPrompt, songCount, category }) => {
     if (!isLoggedIn) {
       navigate('/login');
       return;
@@ -102,16 +111,76 @@ function MainPage() {
     setLoading(true);
     setError(null);
     setPlaylist(null);
+    setSaveSuccess(null);
+    setSaveError(null);
     setPage(1);
+    setPrompt(inputPrompt);
 
     try {
-      const data = await createPlaylist({ prompt, songCount, category });
+      const data = await createPlaylist({ prompt: inputPrompt, songCount, category });
       setPlaylist(data);
     } catch (err) {
       setError(err.message || '플레이리스트 생성 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
+  };
+
+  // 트랙 데이터를 백엔드 저장 포맷으로 변환
+  const buildTrackPayload = (tracks) =>
+    tracks.map((t) => ({
+      spotifyTrackId: t.trackId,
+      spotifyTrackUri: t.trackUri,
+      title: t.title,
+      artist: t.artist,
+      album: t.album,
+    }));
+
+  // 버튼 1: 새 플레이리스트 생성
+  const handleSaveNew = async () => {
+    setSaveLoading(true);
+    setSaveSuccess(null);
+    setSaveError(null);
+    try {
+      await saveAsNewPlaylist({
+        playlistName: playlist.playlistTitle,
+        prompt,
+        tracks: buildTrackPayload(playlist.tracks),
+      });
+      setSaveSuccess('새 플레이리스트가 Spotify에 생성되었습니다!');
+    } catch (err) {
+      setSaveError(err.message || '저장 중 오류가 발생했습니다.');
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
+  // 버튼 2: 기존 플레이리스트에 추가 (모달에서 선택 후)
+  const handleSelectExisting = async (targetSpotifyPlaylistId, targetPlaylistName) => {
+    setShowModal(false);
+    setSaveLoading(true);
+    setSaveSuccess(null);
+    setSaveError(null);
+    try {
+      await saveToExistingPlaylist({
+        targetSpotifyPlaylistId,
+        playlistName: targetPlaylistName,
+        prompt,
+        tracks: buildTrackPayload(playlist.tracks),
+      });
+      setSaveSuccess(`"${targetPlaylistName}"에 트랙이 추가되었습니다!`);
+    } catch (err) {
+      setSaveError(err.message || '저장 중 오류가 발생했습니다.');
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
+  // 모달 열기 전 별도 에러 없이 바로 열기 (모달 내부에서 에러 표시)
+  const handleOpenExistingModal = () => {
+    setSaveSuccess(null);
+    setSaveError(null);
+    setShowModal(true);
   };
 
   const tracks = playlist?.tracks ?? [];
@@ -200,6 +269,31 @@ function MainPage() {
                   <div className={styles.resultHeader}>
                     <h2 className={styles.playlistTitle}>{playlist.playlistTitle}</h2>
                     <p className={styles.trackCount}>{tracks.length}곡</p>
+
+                    {/* Spotify 저장 버튼 */}
+                    <div className={styles.saveButtons}>
+                      <button
+                        className={styles.saveBtnNew}
+                        onClick={handleSaveNew}
+                        disabled={saveLoading}
+                      >
+                        {saveLoading ? '저장 중...' : '+ 새 플레이리스트 생성'}
+                      </button>
+                      <button
+                        className={styles.saveBtnExisting}
+                        onClick={handleOpenExistingModal}
+                        disabled={saveLoading}
+                      >
+                        기존 플레이리스트에 추가
+                      </button>
+                    </div>
+
+                    {saveSuccess && (
+                      <p className={styles.saveSuccess}>✓ {saveSuccess}</p>
+                    )}
+                    {saveError && (
+                      <p className={styles.saveError}>⚠ {saveError}</p>
+                    )}
                   </div>
                   <div className={styles.trackScroll}>
                     {pagedTracks.map((track, i) => (
@@ -286,6 +380,15 @@ function MainPage() {
       <footer className={styles.footer}>
         <p>AI Playlist · Gemini AI × Spotify</p>
       </footer>
+
+      {/* 기존 플레이리스트 선택 모달 */}
+      {showModal && (
+        <SpotifySaveModal
+          onSelect={handleSelectExisting}
+          onCreateNew={handleSaveNew}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }

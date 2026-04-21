@@ -31,6 +31,18 @@
   gap: 24px;
 }
 
+.backLink {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+}
+
+.backLink:hover { color: rgba(255, 255, 255, 0.7); }
+
 .pageTitle {
   font-size: 26px;
   font-weight: 800;

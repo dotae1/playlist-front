@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getAdminPosts, getAdminPost, answerPost } from '../api/postApi';
 import styles from './AdminPage.module.css';
 
@@ -82,6 +83,8 @@ export default function AdminPage() {
       <div className={styles.orb2} />
 
       <div className={styles.inner}>
+        <Link to="/" className={styles.backLink}>← 홈으로</Link>
+
         <h1 className={styles.pageTitle}>
           문의 관리
           <span className={styles.adminBadge}>Admin</span>

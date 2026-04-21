@@ -55,16 +55,12 @@ export default function MyPage() {
               <span className={styles.profileValue}>{data?.name ?? '-'}</span>
             </div>
             <div className={styles.profileItem}>
-              <span className={styles.profileLabel}>닉네임</span>
-              <span className={styles.profileValue}>{data?.nickname ?? '-'}</span>
-            </div>
-            <div className={styles.profileItem}>
               <span className={styles.profileLabel}>이메일</span>
               <span className={styles.profileValue}>{data?.email ?? '-'}</span>
             </div>
             <div className={styles.profileItem}>
               <span className={styles.profileLabel}>나이</span>
-              <span className={styles.profileValue}>{data?.age ?? '-'}</span>
+              <span className={styles.profileValue}>{data?.age ? data.age : '-'}</span>
             </div>
             <div className={styles.profileItem}>
               <span className={styles.profileLabel}>성별</span>
@@ -82,7 +78,7 @@ export default function MyPage() {
             <div className={styles.list}>
               {playlists.map((pl) => (
                 <div key={pl.id} className={styles.playlistItem}>
-                  <p className={styles.playlistTitle}>{pl.playlistTitle ?? pl.title ?? '제목 없음'}</p>
+                  <p className={styles.playlistTitle}>{pl.name ?? pl.playlistTitle ?? pl.title ?? '제목 없음'}</p>
                   {pl.prompt && <p className={styles.playlistPrompt}>{pl.prompt}</p>}
                   <p className={styles.playlistDate}>{formatDate(pl.createdAt)}</p>
                 </div>

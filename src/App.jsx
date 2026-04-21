@@ -257,7 +257,10 @@ function MainPage() {
                     감정, 날씨, 상황, 장르 — 어떤 말이든 좋아요.<br />
                     Gemini가 분석하고 Spotify에서 찾아드립니다.
                   </p>
-                  <div className={styles.scrollHint}>
+                  <div
+                    className={styles.scrollHint}
+                    onClick={() => document.getElementById('tips')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
                     <span>더 잘 쓰는 법 보기</span>
                     <div className={styles.scrollArrow}>↓</div>
                   </div>
@@ -348,7 +351,7 @@ function MainPage() {
       </section>
 
       {/* 예시 섹션 */}
-      <section className={styles.section}>
+      <section id="tips" className={styles.section}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionBadge}>Tips</div>
           <h2 className={styles.sectionTitle}>이렇게 입력하면 더 잘 나와요</h2>

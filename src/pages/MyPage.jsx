@@ -41,6 +41,8 @@ export default function MyPage() {
       <div className={styles.orb2} />
 
       <div className={styles.inner}>
+        <Link to="/" className={styles.backLink}>← 홈으로</Link>
+
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>마이페이지</h1>
           <Link to="/inquiry/new" className={styles.inquiryBtn}>문의하기</Link>

@@ -4,8 +4,8 @@ import { login } from '../api/authApi';
 import { useAuth } from '../context/AuthContext';
 import styles from './AuthPage.module.css';
 
-const GOOGLE_OAUTH_URL = 'http://127.0.0.1:8080/api/v1/oauth2/authorization/google';
-const SPOTIFY_OAUTH_URL = 'http://127.0.0.1:8080/api/v1/oauth2/authorization/spotify';
+const GOOGLE_OAUTH_URL = 'https://3-34-241-80.sslip.io/api/v1/oauth2/authorization/google';
+const SPOTIFY_OAUTH_URL = 'https://3-34-241-80.sslip.io/api/v1/oauth2/authorization/spotify';
 
 export default function LoginPage() {
   const navigate = useNavigate();

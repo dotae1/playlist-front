@@ -9,7 +9,12 @@ import SpotifySaveModal from './components/SpotifySaveModal';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfileCompletePage from './pages/ProfileCompletePage';
+import MyPage from './pages/MyPage';
+import InquiryPage from './pages/InquiryPage';
+import PostDetailPage from './pages/PostDetailPage';
+import AdminPage from './pages/AdminPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import styles from './App.module.css';
 
 const EXAMPLES = [
@@ -89,7 +94,7 @@ function MainPage() {
   const [saveError, setSaveError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const { isLoggedIn, isLoading: authLoading, signOut } = useAuth();
+  const { isLoggedIn, isLoading: authLoading, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -199,7 +204,13 @@ function MainPage() {
         <Link to="/" className={styles.headerLogo}>AI Playlist</Link>
         <div className={styles.headerNav}>
           {authLoading ? null : isLoggedIn ? (
-            <button className={styles.headerLogoutBtn} onClick={handleLogout}>로그아웃</button>
+            <>
+              {isAdmin && (
+                <Link to="/admin" className={styles.headerLoginBtn}>관리자</Link>
+              )}
+              <Link to="/mypage" className={styles.headerLoginBtn}>마이페이지</Link>
+              <button className={styles.headerLogoutBtn} onClick={handleLogout}>로그아웃</button>
+            </>
           ) : (
             <>
               <Link to="/login" className={styles.headerLoginBtn}>로그인</Link>
@@ -400,6 +411,10 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/profile/complete" element={<ProfileCompletePage />} />
+      <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
+      <Route path="/inquiry/new" element={<ProtectedRoute><InquiryPage /></ProtectedRoute>} />
+      <Route path="/inquiry/:id" element={<ProtectedRoute><PostDetailPage /></ProtectedRoute>} />
+      <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
     </Routes>
   );
 }

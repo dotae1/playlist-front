@@ -1,5 +1,28 @@
 const BASE_URL = '/api/v1';
 
+export async function getPlaylist(id) {
+  const res = await fetch(`${BASE_URL}/playlist/${id}`, {
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.message || `서버 오류: ${res.status}`);
+  }
+  const data = await res.json();
+  return data.result;
+}
+
+export async function deletePlaylist(id) {
+  const res = await fetch(`${BASE_URL}/playlist/${id}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.message || `서버 오류: ${res.status}`);
+  }
+}
+
 export async function createPlaylist({ prompt, songCount, category }) {
   const response = await fetch(`${BASE_URL}/playlist`, {
     method: 'POST',

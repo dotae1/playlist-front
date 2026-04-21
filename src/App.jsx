@@ -12,6 +12,7 @@ import ProfileCompletePage from './pages/ProfileCompletePage';
 import MyPage from './pages/MyPage';
 import InquiryPage from './pages/InquiryPage';
 import PostDetailPage from './pages/PostDetailPage';
+import PlaylistDetailPage from './pages/PlaylistDetailPage';
 import AdminPage from './pages/AdminPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -412,6 +413,7 @@ export default function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/profile/complete" element={<ProfileCompletePage />} />
       <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
+      <Route path="/playlist/:id" element={<ProtectedRoute><PlaylistDetailPage /></ProtectedRoute>} />
       <Route path="/inquiry/new" element={<ProtectedRoute><InquiryPage /></ProtectedRoute>} />
       <Route path="/inquiry/:id" element={<ProtectedRoute><PostDetailPage /></ProtectedRoute>} />
       <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />

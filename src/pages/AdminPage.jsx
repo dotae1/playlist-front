@@ -1,7 +1,34 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminPosts, getAdminPost, answerPost } from '../api/postApi';
+import { collectQuizTracks } from '../api/gameApi';
 import styles from './AdminPage.module.css';
+
+const DECADES = [
+  { value: 1990, label: '1990년대', color: '#e040fb' },
+  { value: 2000, label: '2000년대', color: '#ff6d00' },
+  { value: 2010, label: '2010년대', color: '#00bcd4' },
+  { value: 2020, label: '2020년대', color: '#1db954' },
+];
+
+// 상태: idle | loading | done | error
+function useCollectState() {
+  const [states, setStates] = useState(() =>
+    Object.fromEntries(DECADES.map((d) => [d.value, { status: 'idle', result: null, error: null }]))
+  );
+
+  const run = async (decade) => {
+    setStates((prev) => ({ ...prev, [decade]: { status: 'loading', result: null, error: null } }));
+    try {
+      const data = await collectQuizTracks(decade);
+      setStates((prev) => ({ ...prev, [decade]: { status: 'done', result: data, error: null } }));
+    } catch (err) {
+      setStates((prev) => ({ ...prev, [decade]: { status: 'error', result: null, error: err.message } }));
+    }
+  };
+
+  return { states, run };
+}
 
 const CATEGORY_LABEL = {
   SERVICE_PROPOSAL: '서비스 제의',
@@ -18,6 +45,7 @@ function formatDate(str) {
 }
 
 export default function AdminPage() {
+  const { states: collectStates, run: runCollect } = useCollectState();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -86,9 +114,78 @@ export default function AdminPage() {
         <Link to="/" className={styles.backLink}>← 홈으로</Link>
 
         <h1 className={styles.pageTitle}>
-          문의 관리
+          관리자 페이지
           <span className={styles.adminBadge}>Admin</span>
         </h1>
+
+        {/* 퀴즈 트랙 수집 섹션 */}
+        <section className={styles.collectSection}>
+          <h2 className={styles.sectionTitle}>퀴즈 트랙 수집</h2>
+          <p className={styles.sectionDesc}>
+            연대별로 Spotify + Deezer에서 100곡을 수집합니다. 이미 DB에 있는 곡은 제외됩니다.
+          </p>
+          <div className={styles.collectGrid}>
+            {DECADES.map((d) => {
+              const state = collectStates[d.value];
+              const isLoading = state.status === 'loading';
+              return (
+                <div key={d.value} className={styles.collectCard} style={{ '--accent': d.color }}>
+                  <div className={styles.collectCardTop}>
+                    <span className={styles.collectLabel}>{d.label}</span>
+                    {state.status === 'done' && (
+                      <span className={styles.collectBadgeDone}>완료</span>
+                    )}
+                    {state.status === 'error' && (
+                      <span className={styles.collectBadgeError}>오류</span>
+                    )}
+                  </div>
+
+                  {/* 로딩 웨이브 */}
+                  {isLoading && (
+                    <div className={styles.waveWrap}>
+                      <div className={styles.wave}>
+                        {[...Array(5)].map((_, i) => (
+                          <span key={i} style={{ animationDelay: `${i * 0.12}s`, background: d.color }} />
+                        ))}
+                      </div>
+                      <p className={styles.collectingText}>수집 중... (수분 소요)</p>
+                    </div>
+                  )}
+
+                  {/* 결과 */}
+                  {state.status === 'done' && state.result && (
+                    <div className={styles.collectResult}>
+                      <div className={styles.collectStat}>
+                        <span className={styles.collectStatVal}>{state.result.newlyCollected}</span>
+                        <span className={styles.collectStatLabel}>새로 추가</span>
+                      </div>
+                      <div className={styles.collectStatDivider} />
+                      <div className={styles.collectStat}>
+                        <span className={styles.collectStatVal}>{state.result.totalInDb}</span>
+                        <span className={styles.collectStatLabel}>DB 총 곡 수</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 에러 */}
+                  {state.status === 'error' && (
+                    <p className={styles.collectError}>{state.error}</p>
+                  )}
+
+                  <button
+                    className={styles.collectBtn}
+                    onClick={() => runCollect(d.value)}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? '수집 중...' : state.status === 'done' ? '재수집' : '수집 시작'}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <h2 className={styles.sectionTitle}>문의 관리</h2>
 
         {/* 목록 */}
         {posts.length === 0 ? (

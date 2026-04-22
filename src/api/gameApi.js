@@ -5,3 +5,15 @@ export async function fetchQuizTrack(decade) {
   if (!res.ok) throw new Error('퀴즈 트랙을 불러오지 못했습니다.');
   return res.json();
 }
+
+export async function collectQuizTracks(decade) {
+  const res = await fetch(`${BASE_URL}/admin/game/collect?decade=${decade}`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `서버 오류: ${res.status}`);
+  }
+  return res.json();
+}

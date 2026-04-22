@@ -2,10 +2,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import styles from './GameSelectPage.module.css';
 
 const DECADES = [
-  { value: 1990, label: '1990년대', sub: '90s Hits', color: '#e040fb' },
-  { value: 2000, label: '2000년대', sub: '2000s Bangers', color: '#ff6d00' },
-  { value: 2010, label: '2010년대', sub: '2010s Classics', color: '#00bcd4' },
-  { value: 2020, label: '2020년대', sub: '2020s Fresh', color: '#1db954' },
+  { value: '1990_EARLY', label: '1990년대 초', sub: '1990~1994', color: '#e040fb' },
+  { value: '1990_LATE', label: '1990년대 말', sub: '1995~1999', color: '#c158dc' },
+  { value: '2000', label: '2000년대', sub: '2000s Bangers', color: '#ff6d00' },
+  { value: '2010', label: '2010년대', sub: '2010s Classics', color: '#00bcd4' },
+  { value: '2020', label: '2020년대', sub: '2020s Fresh', color: '#1db954' },
 ];
 
 export default function GameSelectPage() {

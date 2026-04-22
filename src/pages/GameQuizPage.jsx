@@ -6,10 +6,11 @@ import styles from './GameQuizPage.module.css';
 const MAX_RETRIES = 5;
 
 const DECADE_LABELS = {
-  1990: '1990년대',
-  2000: '2000년대',
-  2010: '2010년대',
-  2020: '2020년대',
+  '1990_EARLY': '1990년대 초 (1990~1994)',
+  '1990_LATE': '1990년대 말 (1995~1999)',
+  '2000': '2000년대',
+  '2010': '2010년대',
+  '2020': '2020년대',
 };
 
 function normalize(str) {
@@ -19,7 +20,7 @@ function normalize(str) {
 export default function GameQuizPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const decade = Number(searchParams.get('decade'));
+  const decade = searchParams.get('decade');
 
   const [track, setTrack] = useState(null);
   const [loading, setLoading] = useState(true);

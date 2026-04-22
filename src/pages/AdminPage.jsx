@@ -5,10 +5,11 @@ import { collectQuizTracks } from '../api/gameApi';
 import styles from './AdminPage.module.css';
 
 const DECADES = [
-  { value: 1990, label: '1990년대', color: '#e040fb' },
-  { value: 2000, label: '2000년대', color: '#ff6d00' },
-  { value: 2010, label: '2010년대', color: '#00bcd4' },
-  { value: 2020, label: '2020년대', color: '#1db954' },
+  { value: '1990_EARLY', label: '1990년대 초 (1990~1994)', color: '#e040fb' },
+  { value: '1990_LATE', label: '1990년대 말 (1995~1999)', color: '#c158dc' },
+  { value: '2000', label: '2000년대', color: '#ff6d00' },
+  { value: '2010', label: '2010년대', color: '#00bcd4' },
+  { value: '2020', label: '2020년대', color: '#1db954' },
 ];
 
 // 상태: idle | loading | done | error

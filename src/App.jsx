@@ -14,6 +14,8 @@ import InquiryPage from './pages/InquiryPage';
 import PostDetailPage from './pages/PostDetailPage';
 import PlaylistDetailPage from './pages/PlaylistDetailPage';
 import AdminPage from './pages/AdminPage';
+import GameSelectPage from './pages/GameSelectPage';
+import GameQuizPage from './pages/GameQuizPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import styles from './App.module.css';
@@ -204,6 +206,7 @@ function MainPage() {
       <header className={styles.header}>
         <Link to="/" className={styles.headerLogo}>AI Playlist</Link>
         <div className={styles.headerNav}>
+          <Link to="/game" className={styles.headerLoginBtn}>음악 퀴즈</Link>
           {authLoading ? null : isLoggedIn ? (
             <>
               {isAdmin && (
@@ -420,6 +423,8 @@ export default function App() {
       <Route path="/inquiry/new" element={<ProtectedRoute><InquiryPage /></ProtectedRoute>} />
       <Route path="/inquiry/:id" element={<ProtectedRoute><PostDetailPage /></ProtectedRoute>} />
       <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
+      <Route path="/game" element={<GameSelectPage />} />
+      <Route path="/game/quiz" element={<GameQuizPage />} />
     </Routes>
   );
 }

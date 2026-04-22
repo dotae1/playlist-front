@@ -35,6 +35,7 @@ export default function GameQuizPage() {
   const [total, setTotal] = useState(0);
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hintUsed, setHintUsed] = useState(false);
   const audioRef = useRef(null);
   const retryCountRef = useRef(0);
 
@@ -45,6 +46,7 @@ export default function GameQuizPage() {
     setTitleInput('');
     setArtistInput('');
     setIsPlaying(false);
+    setHintUsed(false);
 
     if (audioRef.current) {
       audioRef.current.pause();
@@ -154,11 +156,17 @@ export default function GameQuizPage() {
           <div className={styles.quizCard}>
             {/* 앨범 커버 + 재생 버튼 */}
             <div className={styles.albumWrap}>
-              <img
-                src={track.albumImageUrl}
-                alt="album cover"
-                className={styles.albumImg}
-              />
+              {hintUsed || submitted ? (
+                <img
+                  src={track.albumImageUrl}
+                  alt="album cover"
+                  className={styles.albumImg}
+                />
+              ) : (
+                <div className={styles.albumPlaceholder}>
+                  <span className={styles.questionMark}>?</span>
+                </div>
+              )}
               {submitted && (
                 <div className={styles.albumOverlay}>
                   <p className={styles.revealTitle}>{track.title}</p>
@@ -181,6 +189,16 @@ export default function GameQuizPage() {
                   </svg>
                 )}
               </button>
+
+              {!submitted && !hintUsed && (
+                <button
+                  className={styles.hintBtn}
+                  onClick={() => setHintUsed(true)}
+                  aria-label="앨범 커버 힌트 보기"
+                >
+                  힌트
+                </button>
+              )}
 
               <audio
                 ref={audioRef}

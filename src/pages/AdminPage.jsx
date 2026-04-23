@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminPosts, getAdminPost, answerPost } from '../api/postApi';
 import { collectQuizTracks } from '../api/gameApi';
+import { getVisitorStats } from '../api/statsApi';
 import styles from './AdminPage.module.css';
 
 const DECADES = [
@@ -43,6 +44,102 @@ function formatDate(str) {
     year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit',
   });
+}
+
+function StatsSection() {
+  const [days, setDays] = useState(7);
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    getVisitorStats(days)
+      .then((data) => setStats(data.result ?? data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [days]);
+
+  const maxVisitors = stats ? Math.max(...stats.map((d) => d.visitors ?? 0), 1) : 1;
+  const maxAiCalls = stats ? Math.max(...stats.map((d) => d.aiCalls ?? 0), 1) : 1;
+
+  return (
+    <section className={styles.statsSection}>
+      <div className={styles.statsTitleRow}>
+        <h2 className={styles.sectionTitle}>방문자 & AI 호출 통계</h2>
+        <div className={styles.daysTabs}>
+          {[7, 14, 30].map((d) => (
+            <button
+              key={d}
+              className={`${styles.daysTab} ${days === d ? styles.daysTabActive : ''}`}
+              onClick={() => setDays(d)}
+            >
+              {d}일
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {loading && <p className={styles.statsLoading}>불러오는 중...</p>}
+      {error && <p className={styles.statsError}>{error}</p>}
+
+      {stats && !loading && (
+        <>
+          {/* 요약 카드 */}
+          <div className={styles.summaryCards}>
+            <div className={styles.summaryCard}>
+              <span className={styles.summaryVal}>
+                {stats.reduce((sum, d) => sum + (d.visitors ?? 0), 0).toLocaleString()}
+              </span>
+              <span className={styles.summaryLabel}>총 방문자 ({days}일)</span>
+            </div>
+            <div className={styles.summaryCard}>
+              <span className={styles.summaryVal} style={{ color: '#7c5cfc' }}>
+                {stats.reduce((sum, d) => sum + (d.aiCalls ?? 0), 0).toLocaleString()}
+              </span>
+              <span className={styles.summaryLabel}>총 AI 호출 ({days}일)</span>
+            </div>
+          </div>
+
+          {/* 바 차트 */}
+          <div className={styles.chartWrap}>
+            {stats.map((d) => (
+              <div key={d.date} className={styles.chartCol}>
+                <div className={styles.barGroup}>
+                  <div className={styles.barWrap} title={`방문자: ${d.visitors ?? 0}`}>
+                    <div
+                      className={styles.barVisitor}
+                      style={{ height: `${((d.visitors ?? 0) / maxVisitors) * 100}%` }}
+                    />
+                  </div>
+                  <div className={styles.barWrap} title={`AI 호출: ${d.aiCalls ?? 0}`}>
+                    <div
+                      className={styles.barAi}
+                      style={{ height: `${((d.aiCalls ?? 0) / maxAiCalls) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                <span className={styles.chartDate}>
+                  {d.date?.slice(5)}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* 범례 */}
+          <div className={styles.legend}>
+            <span className={styles.legendItem}>
+              <span className={styles.legendDotVisitor} />방문자
+            </span>
+            <span className={styles.legendItem}>
+              <span className={styles.legendDotAi} />AI 호출
+            </span>
+          </div>
+        </>
+      )}
+    </section>
+  );
 }
 
 export default function AdminPage() {
@@ -118,6 +215,9 @@ export default function AdminPage() {
           관리자 페이지
           <span className={styles.adminBadge}>Admin</span>
         </h1>
+
+        {/* 통계 섹션 */}
+        <StatsSection />
 
         {/* 퀴즈 트랙 수집 섹션 */}
         <section className={styles.collectSection}>

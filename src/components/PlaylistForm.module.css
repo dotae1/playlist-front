@@ -9,6 +9,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  justify-content: center;
 }
 
 .categoryBtn {
@@ -49,6 +50,7 @@
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .countLabel {
@@ -150,6 +152,7 @@
 
 .textarea::placeholder {
   color: rgba(255, 255, 255, 0.3);
+  text-align: center;
 }
 
 .textarea:focus {

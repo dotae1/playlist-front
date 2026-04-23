@@ -244,6 +244,13 @@ export default function GameQuizPage() {
                 >
                   정답 확인
                 </button>
+                <button
+                  type="button"
+                  className={styles.skipBtn}
+                  onClick={loadTrack}
+                >
+                  모르겠어요 →
+                </button>
               </form>
             ) : (
               <div className={styles.feedback}>

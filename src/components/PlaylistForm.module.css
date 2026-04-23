@@ -1,32 +1,25 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
-.inputRow {
+/* ── 1행: 키워드 ── */
+.categoryRow {
   display: flex;
-  gap: 10px;
-  align-items: stretch;
-}
-
-.categoryButtons {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .categoryBtn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
+  border-radius: 20px;
   color: rgba(255, 255, 255, 0.55);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 0 12px;
-  flex: 1;
+  padding: 7px 16px;
   transition: all 0.2s;
   font-family: inherit;
   white-space: nowrap;
@@ -50,102 +43,40 @@
   cursor: not-allowed;
 }
 
-.textareaWrapper {
-  position: relative;
-  flex: 1;
-}
-
-.textarea {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  color: #fff;
-  font-size: 15px;
-  line-height: 1.6;
-  padding: 16px;
-  resize: none;
-  transition: border-color 0.2s;
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-.textarea::placeholder {
-  color: rgba(255, 255, 255, 0.35);
-}
-
-.textarea:focus {
-  outline: none;
-  border-color: #1db954;
-}
-
-.textarea:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.examples {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.exampleChip {
-  background: rgba(29, 185, 84, 0.1);
-  border: 1px solid rgba(29, 185, 84, 0.3);
-  border-radius: 20px;
-  color: #1db954;
-  cursor: pointer;
-  font-size: 12px;
-  padding: 6px 14px;
-  transition: background 0.2s, border-color 0.2s;
-  font-family: inherit;
-}
-
-.exampleChip:hover:not(:disabled) {
-  background: rgba(29, 185, 84, 0.2);
-  border-color: #1db954;
-}
-
-.exampleChip:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.controls {
+/* ── 2행: 곡 수 ── */
+.countRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
-}
-
-.countControl {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .countLabel {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.45);
   font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .countButtons {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .countBtn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 20px;
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   font-size: 13px;
-  padding: 6px 12px;
+  font-weight: 600;
+  padding: 7px 16px;
   transition: all 0.2s;
   font-family: inherit;
+  white-space: nowrap;
 }
 
 .countBtn:hover:not(:disabled) {
@@ -164,6 +95,74 @@
   cursor: not-allowed;
 }
 
+.countInput {
+  width: 90px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.countInput::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: 400;
+}
+
+.countInput:focus,
+.countInputActive {
+  border-color: #1db954;
+  background: rgba(29, 185, 84, 0.1);
+  color: #1db954;
+}
+
+.countInput:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.countMax {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── 3행: 텍스트에어리어 ── */
+.textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.7;
+  padding: 20px;
+  resize: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #1db954;
+}
+
+.textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── 제출 버튼 ── */
 .submitBtn {
   background: #1db954;
   border: none;
@@ -172,13 +171,15 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 15px;
   font-weight: 700;
-  padding: 12px 28px;
+  padding: 14px 28px;
   transition: background 0.2s, transform 0.1s;
   white-space: nowrap;
   font-family: inherit;
+  width: 100%;
 }
 
 .submitBtn:hover:not(:disabled) {
@@ -203,6 +204,7 @@
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 @keyframes spin {

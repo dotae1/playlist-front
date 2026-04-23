@@ -209,7 +209,10 @@ export default function GameQuizPage() {
 
             {/* 힌트 텍스트 */}
             {!submitted && (
-              <p className={styles.hint}>재생 버튼을 눌러 곡을 듣고 제목과 아티스트를 맞춰보세요</p>
+              <div className={styles.hintWrap}>
+                <p className={styles.hint}>재생 버튼을 눌러 곡을 듣고 제목과 아티스트를 맞춰보세요</p>
+                <p className={styles.hintSub}>가수와 노래 이름을 정확하게 입력해야 정답 처리가 됩니다.</p>
+              </div>
             )}
 
             {/* 정답 입력 폼 */}

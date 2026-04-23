@@ -97,6 +97,9 @@ function MainPage() {
   const [saveError, setSaveError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  // 트랙 선택 상태
+  const [selectedIds, setSelectedIds] = useState(new Set());
+
   const { isLoggedIn, isLoading: authLoading, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -127,6 +130,7 @@ function MainPage() {
     try {
       const data = await createPlaylist({ prompt: inputPrompt, songCount, category });
       setPlaylist(data);
+      setSelectedIds(new Set((data.tracks ?? []).map((t) => t.trackId)));
     } catch (err) {
       setError(err.message || '플레이리스트 생성 중 오류가 발생했습니다.');
     } finally {
@@ -134,15 +138,17 @@ function MainPage() {
     }
   };
 
-  // 트랙 데이터를 백엔드 저장 포맷으로 변환
+  // 선택된 트랙만 백엔드 저장 포맷으로 변환
   const buildTrackPayload = (tracks) =>
-    tracks.map((t) => ({
-      spotifyTrackId: t.trackId,
-      spotifyTrackUri: t.trackUri,
-      title: t.title,
-      artist: t.artist,
-      album: t.album,
-    }));
+    tracks
+      .filter((t) => selectedIds.has(t.trackId))
+      .map((t) => ({
+        spotifyTrackId: t.trackId,
+        spotifyTrackUri: t.trackUri,
+        title: t.title,
+        artist: t.artist,
+        album: t.album,
+      }));
 
   // 버튼 1: 새 플레이리스트 생성
   const handleSaveNew = async () => {
@@ -286,21 +292,37 @@ function MainPage() {
                 <div className={styles.resultBox}>
                   <div className={styles.resultHeader}>
                     <h2 className={styles.playlistTitle}>{playlist.playlistTitle}</h2>
-                    <p className={styles.trackCount}>{tracks.length}곡</p>
+                    <div className={styles.trackCountRow}>
+                      <p className={styles.trackCount}>{tracks.length}곡</p>
+                      <button
+                        className={styles.selectAllBtn}
+                        type="button"
+                        onClick={() => {
+                          if (selectedIds.size === tracks.length) {
+                            setSelectedIds(new Set());
+                          } else {
+                            setSelectedIds(new Set(tracks.map((t) => t.trackId)));
+                          }
+                        }}
+                      >
+                        {selectedIds.size === tracks.length ? '전체 해제' : '전체 선택'}
+                      </button>
+                      <span className={styles.selectedCount}>{selectedIds.size}곡 선택됨</span>
+                    </div>
 
                     {/* Spotify 저장 버튼 */}
                     <div className={styles.saveButtons}>
                       <button
                         className={styles.saveBtnNew}
                         onClick={handleSaveNew}
-                        disabled={saveLoading}
+                        disabled={saveLoading || selectedIds.size === 0}
                       >
-                        {saveLoading ? '저장 중...' : '+ 새 플레이리스트 생성'}
+                        {saveLoading ? '저장 중...' : `+ 새 플레이리스트 생성`}
                       </button>
                       <button
                         className={styles.saveBtnExisting}
                         onClick={handleOpenExistingModal}
-                        disabled={saveLoading}
+                        disabled={saveLoading || selectedIds.size === 0}
                       >
                         기존 플레이리스트에 추가
                       </button>
@@ -319,6 +341,14 @@ function MainPage() {
                         key={track.trackId ?? i}
                         track={track}
                         index={(page - 1) * PAGE_SIZE + i}
+                        checked={selectedIds.has(track.trackId)}
+                        onToggle={(id) =>
+                          setSelectedIds((prev) => {
+                            const next = new Set(prev);
+                            next.has(id) ? next.delete(id) : next.add(id);
+                            return next;
+                          })
+                        }
                       />
                     ))}
                   </div>

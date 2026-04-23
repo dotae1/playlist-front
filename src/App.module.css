@@ -213,7 +213,7 @@
 .heroLayout {
   display: flex;
   gap: 64px;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
 }
 
@@ -327,10 +327,42 @@
   letter-spacing: -0.3px;
 }
 
+.trackCountRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
 .trackCount {
   color: rgba(255, 255, 255, 0.35);
   font-size: 13px;
   margin: 0;
+}
+
+.selectAllBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.selectAllBtn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.selectedCount {
+  font-size: 12px;
+  color: #1db954;
+  font-weight: 600;
+  margin-left: auto;
 }
 
 /* ── Spotify 저장 버튼 ── */

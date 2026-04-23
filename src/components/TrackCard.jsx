@@ -1,12 +1,30 @@
 import styles from './TrackCard.module.css';
 
-export default function TrackCard({ track, index }) {
+export default function TrackCard({ track, index, checked, onToggle }) {
   const spotifyUrl = track.trackId
     ? `https://open.spotify.com/track/${track.trackId}`
     : null;
 
+  const selectable = checked !== undefined && onToggle;
+
   return (
-    <div className={styles.card}>
+    <div
+      className={`${styles.card} ${selectable ? styles.selectable : ''} ${selectable && checked ? styles.selected : ''}`}
+      onClick={selectable ? () => onToggle(track.trackId) : undefined}
+    >
+      {selectable && (
+        <span
+          className={`${styles.checkbox} ${checked ? styles.checkboxChecked : ''}`}
+          aria-hidden="true"
+        >
+          {checked && (
+            <svg viewBox="0 0 12 12" fill="none" width="10" height="10">
+              <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </span>
+      )}
+
       <span className={styles.index}>{index + 1}</span>
 
       <div className={styles.albumWrap}>
@@ -25,7 +43,6 @@ export default function TrackCard({ track, index }) {
       <div className={styles.info}>
         <p className={styles.title}>{track.title}</p>
         <p className={styles.artist}>{track.artist}</p>
-        <p className={styles.album}>{track.album}</p>
       </div>
 
       {spotifyUrl && (
@@ -35,6 +52,7 @@ export default function TrackCard({ track, index }) {
           target="_blank"
           rel="noopener noreferrer"
           title="Spotify에서 듣기"
+          onClick={(e) => e.stopPropagation()}
         >
           <SpotifyIcon />
         </a>

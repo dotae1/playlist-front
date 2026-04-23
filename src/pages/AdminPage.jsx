@@ -61,8 +61,8 @@ function StatsSection() {
       .finally(() => setLoading(false));
   }, [days]);
 
-  const maxVisitors = stats ? Math.max(...stats.map((d) => d.visitors ?? 0), 1) : 1;
-  const maxAiCalls = stats ? Math.max(...stats.map((d) => d.aiCalls ?? 0), 1) : 1;
+  const maxVisitors = stats ? Math.max(...stats.map((d) => d.visitorCount ?? 0), 1) : 1;
+  const maxAiCalls = stats ? Math.max(...stats.map((d) => d.aiCallCount ?? 0), 1) : 1;
 
   return (
     <section className={styles.statsSection}>
@@ -90,13 +90,13 @@ function StatsSection() {
           <div className={styles.summaryCards}>
             <div className={styles.summaryCard}>
               <span className={styles.summaryVal}>
-                {stats.reduce((sum, d) => sum + (d.visitors ?? 0), 0).toLocaleString()}
+                {stats.reduce((sum, d) => sum + (d.visitorCount ?? 0), 0).toLocaleString()}
               </span>
               <span className={styles.summaryLabel}>총 방문자 ({days}일)</span>
             </div>
             <div className={styles.summaryCard}>
               <span className={styles.summaryVal} style={{ color: '#7c5cfc' }}>
-                {stats.reduce((sum, d) => sum + (d.aiCalls ?? 0), 0).toLocaleString()}
+                {stats.reduce((sum, d) => sum + (d.aiCallCount ?? 0), 0).toLocaleString()}
               </span>
               <span className={styles.summaryLabel}>총 AI 호출 ({days}일)</span>
             </div>
@@ -107,16 +107,16 @@ function StatsSection() {
             {stats.map((d) => (
               <div key={d.date} className={styles.chartCol}>
                 <div className={styles.barGroup}>
-                  <div className={styles.barWrap} title={`방문자: ${d.visitors ?? 0}`}>
+                  <div className={styles.barWrap} title={`방문자: ${d.visitorCount ?? 0}`}>
                     <div
                       className={styles.barVisitor}
-                      style={{ height: `${((d.visitors ?? 0) / maxVisitors) * 100}%` }}
+                      style={{ height: `${((d.visitorCount ?? 0) / maxVisitors) * 100}%` }}
                     />
                   </div>
-                  <div className={styles.barWrap} title={`AI 호출: ${d.aiCalls ?? 0}`}>
+                  <div className={styles.barWrap} title={`AI 호출: ${d.aiCallCount ?? 0}`}>
                     <div
                       className={styles.barAi}
-                      style={{ height: `${((d.aiCalls ?? 0) / maxAiCalls) * 100}%` }}
+                      style={{ height: `${((d.aiCallCount ?? 0) / maxAiCalls) * 100}%` }}
                     />
                   </div>
                 </div>

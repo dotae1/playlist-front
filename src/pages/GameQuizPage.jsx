@@ -14,7 +14,10 @@ const DECADE_LABELS = {
 };
 
 function normalize(str) {
-  return str.replace(/\s+/g, '').toLowerCase();
+  return str?.replace(/\(.*?\)/g, '')
+             .replace(/\[.*?\]/g, '')
+             .replace(/\s+/g, '')
+             .toLowerCase() ?? '';
 }
 
 export default function GameQuizPage() {
@@ -103,8 +106,13 @@ export default function GameQuizPage() {
     e.preventDefault();
     if (submitted || !track) return;
 
-    const titleOk = normalize(titleInput) === track.titleNormalized;
-    const artistOk = normalize(artistInput) === track.artistNormalized;
+    const normalizedTitle = normalize(titleInput);
+    const normalizedArtist = normalize(artistInput);
+
+    const titleOk = normalizedTitle === track.titleNormalized ||
+      (track.titleNormalizedAlias && normalizedTitle === track.titleNormalizedAlias);
+    const artistOk = normalizedArtist === track.artistNormalized ||
+      (track.artistNormalizedAlias && normalizedArtist === track.artistNormalizedAlias);
     const isCorrect = titleOk && artistOk;
 
     setCorrect(isCorrect);

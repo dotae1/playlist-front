@@ -109,6 +109,14 @@ export default function GameQuizPage() {
     const normalizedTitle = normalize(titleInput);
     const normalizedArtist = normalize(artistInput);
 
+    console.log('[quiz] input:', { normalizedTitle, normalizedArtist });
+    console.log('[quiz] track:', {
+      titleNormalized: track.titleNormalized,
+      titleNormalizedAlias: track.titleNormalizedAlias,
+      artistNormalized: track.artistNormalized,
+      artistNormalizedAlias: track.artistNormalizedAlias,
+    });
+
     const titleOk = normalizedTitle === track.titleNormalized ||
       (track.titleNormalizedAlias && normalizedTitle === track.titleNormalizedAlias);
     const artistOk = normalizedArtist === track.artistNormalized ||

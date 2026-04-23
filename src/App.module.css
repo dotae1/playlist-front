@@ -649,6 +649,23 @@
 }
 
 /* ── 반응형 ── */
+@media (max-width: 480px) {
+  .header {
+    padding: 0 14px;
+  }
+
+  .headerNav {
+    gap: 6px;
+  }
+
+  .headerLoginBtn,
+  .headerSignupBtn,
+  .headerLogoutBtn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
 @media (max-width: 1024px) {
   .featureGrid {
     grid-template-columns: repeat(2, 1fr);

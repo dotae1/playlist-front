@@ -6,6 +6,16 @@ export async function fetchQuizTrack(decade) {
   return res.json();
 }
 
+export async function submitQuizAnswer(quizId, titleInput, artistInput) {
+  const res = await fetch(`${BASE_URL}/game/quiz/answer`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ quizId, titleInput, artistInput }),
+  });
+  if (!res.ok) throw new Error('정답 제출 중 오류가 발생했습니다.');
+  return res.json();
+}
+
 export async function collectQuizTracks(decade) {
   const res = await fetch(`${BASE_URL}/admin/game/collect?decade=${decade}`, {
     method: 'POST',

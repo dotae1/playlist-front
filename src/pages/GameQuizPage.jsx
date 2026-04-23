@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { fetchQuizTrack } from '../api/gameApi';
+import { fetchQuizTrack, submitQuizAnswer } from '../api/gameApi';
 import styles from './GameQuizPage.module.css';
 
 const MAX_RETRIES = 5;
@@ -13,26 +13,23 @@ const DECADE_LABELS = {
   '2020': '2020년대',
 };
 
-function normalize(str) {
-  return str?.replace(/\(.*?\)/g, '')
-             .replace(/\[.*?\]/g, '')
-             .replace(/\s+/g, '')
-             .toLowerCase() ?? '';
-}
-
 export default function GameQuizPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const decade = searchParams.get('decade');
 
+  // 퀴즈 데이터 (quizId, previewUrl, albumImageUrl)
   const [track, setTrack] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [titleInput, setTitleInput] = useState('');
   const [artistInput, setArtistInput] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [correct, setCorrect] = useState(false);
+
+  // 서버 응답: { correct, title, artist, albumImageUrl }
+  const [result, setResult] = useState(null);
 
   const [score, setScore] = useState(0);
   const [total, setTotal] = useState(0);
@@ -40,12 +37,12 @@ export default function GameQuizPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
   const audioRef = useRef(null);
-  const retryCountRef = useRef(0);
 
   const loadTrack = useCallback(async () => {
     setLoading(true);
     setError(null);
     setSubmitted(false);
+    setResult(null);
     setTitleInput('');
     setArtistInput('');
     setIsPlaying(false);
@@ -61,12 +58,10 @@ export default function GameQuizPage() {
       try {
         const data = await fetchQuizTrack(decade);
         if (data.previewUrl) {
-          retryCountRef.current = 0;
           setTrack(data);
           setLoading(false);
           return;
         }
-        // previewUrl이 null이면 재시도
         attempts++;
       } catch {
         setError('트랙을 불러오는 중 오류가 발생했습니다.');
@@ -87,7 +82,6 @@ export default function GameQuizPage() {
     loadTrack();
   }, [decade, loadTrack, navigate]);
 
-  // 오디오 재생/일시정지
   const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -102,30 +96,28 @@ export default function GameQuizPage() {
 
   const handleAudioEnded = () => setIsPlaying(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (submitted || !track) return;
+    if (submitted || submitting || !track) return;
 
-    const normalizedTitle = normalize(titleInput);
-    const normalizedArtist = normalize(artistInput);
-
-    const titleOk = normalizedTitle === track.titleNormalized ||
-      (track.titleNormalizedAlias && normalizedTitle === track.titleNormalizedAlias);
-    const artistOk = normalizedArtist === track.artistNormalized ||
-      (track.artistNormalizedAlias && normalizedArtist === track.artistNormalizedAlias);
-    const isCorrect = titleOk && artistOk;
-
-    setCorrect(isCorrect);
-    setSubmitted(true);
-    setTotal((t) => t + 1);
-    if (isCorrect) setScore((s) => s + 1);
-  };
-
-  const handleNext = () => {
-    loadTrack();
+    setSubmitting(true);
+    try {
+      const res = await submitQuizAnswer(track.quizId, titleInput, artistInput);
+      setResult(res);
+      setSubmitted(true);
+      setTotal((t) => t + 1);
+      if (res.correct) setScore((s) => s + 1);
+    } catch {
+      setError('정답 제출 중 오류가 발생했습니다.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!decade || !DECADE_LABELS[decade]) return null;
+
+  // 앨범 이미지: 힌트/제출 후에는 result.albumImageUrl(서버 응답) 또는 track.albumImageUrl 사용
+  const albumImageUrl = result?.albumImageUrl ?? track?.albumImageUrl;
 
   return (
     <div className={styles.root}>
@@ -166,7 +158,7 @@ export default function GameQuizPage() {
             <div className={styles.albumWrap}>
               {hintUsed || submitted ? (
                 <img
-                  src={track.albumImageUrl}
+                  src={albumImageUrl}
                   alt="album cover"
                   className={styles.albumImg}
                 />
@@ -175,10 +167,10 @@ export default function GameQuizPage() {
                   <span className={styles.questionMark}>?</span>
                 </div>
               )}
-              {submitted && (
+              {submitted && result && (
                 <div className={styles.albumOverlay}>
-                  <p className={styles.revealTitle}>{track.title}</p>
-                  <p className={styles.revealArtist}>{track.artist}</p>
+                  <p className={styles.revealTitle}>{result.title}</p>
+                  <p className={styles.revealArtist}>{result.artist}</p>
                 </div>
               )}
               <button
@@ -232,6 +224,7 @@ export default function GameQuizPage() {
                     value={titleInput}
                     onChange={(e) => setTitleInput(e.target.value)}
                     autoComplete="off"
+                    disabled={submitting}
                   />
                 </div>
                 <div className={styles.inputGroup}>
@@ -243,42 +236,44 @@ export default function GameQuizPage() {
                     value={artistInput}
                     onChange={(e) => setArtistInput(e.target.value)}
                     autoComplete="off"
+                    disabled={submitting}
                   />
                 </div>
                 <button
                   className={styles.submitBtn}
                   type="submit"
-                  disabled={!titleInput.trim() || !artistInput.trim()}
+                  disabled={!titleInput.trim() || !artistInput.trim() || submitting}
                 >
-                  정답 확인
+                  {submitting ? '확인 중...' : '정답 확인'}
                 </button>
                 <button
                   type="button"
                   className={styles.skipBtn}
                   onClick={loadTrack}
+                  disabled={submitting}
                 >
                   모르겠어요 →
                 </button>
               </form>
             ) : (
               <div className={styles.feedback}>
-                <div className={`${styles.resultBadge} ${correct ? styles.correct : styles.wrong}`}>
-                  {correct ? '정답!' : '오답'}
+                <div className={`${styles.resultBadge} ${result?.correct ? styles.correct : styles.wrong}`}>
+                  {result?.correct ? '정답!' : '오답'}
                 </div>
-                {!correct && (
+                {!result?.correct && result && (
                   <div className={styles.answerReveal}>
                     <p className={styles.answerRow}>
                       <span className={styles.answerField}>제목</span>
-                      <span className={styles.answerVal}>{track.title}</span>
+                      <span className={styles.answerVal}>{result.title}</span>
                     </p>
                     <p className={styles.answerRow}>
                       <span className={styles.answerField}>아티스트</span>
-                      <span className={styles.answerVal}>{track.artist}</span>
+                      <span className={styles.answerVal}>{result.artist}</span>
                     </p>
                   </div>
                 )}
                 <div className={styles.actionRow}>
-                  <button className={styles.nextBtn} onClick={handleNext}>다음 곡 →</button>
+                  <button className={styles.nextBtn} onClick={loadTrack}>다음 곡 →</button>
                 </div>
               </div>
             )}

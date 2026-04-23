@@ -43,48 +43,53 @@ export default function PlaylistForm({ onSubmit, loading }) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      {/* 1행: 키워드 */}
-      <div className={styles.categoryRow}>
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            className={`${styles.categoryBtn} ${category === cat ? styles.categoryBtnActive : ''}`}
-            onClick={() => handleCategoryClick(cat)}
-            disabled={loading}
-          >
-            {cat}
-          </button>
-        ))}
+      {/* 1행: 장르 */}
+      <div className={styles.fieldBlock}>
+        <span className={styles.fieldLabel}>장르</span>
+        <div className={styles.categoryRow}>
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              className={`${styles.categoryBtn} ${category === cat ? styles.categoryBtnActive : ''}`}
+              onClick={() => handleCategoryClick(cat)}
+              disabled={loading}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* 2행: 곡 수 */}
-      <div className={styles.countRow}>
-        <span className={styles.countLabel}>곡 수</span>
-        <div className={styles.countButtons}>
-          {[10, 20].map((n) => (
-            <button
-              key={n}
-              type="button"
-              className={`${styles.countBtn} ${!useCustom && songCount === n ? styles.countBtnActive : ''}`}
-              onClick={() => handleCountClick(n)}
+      <div className={styles.fieldBlock}>
+        <span className={styles.fieldLabel}>곡 수</span>
+        <div className={styles.countRow}>
+          <div className={styles.countButtons}>
+            {[10, 20].map((n) => (
+              <button
+                key={n}
+                type="button"
+                className={`${styles.countBtn} ${!useCustom && songCount === n ? styles.countBtnActive : ''}`}
+                onClick={() => handleCountClick(n)}
+                disabled={loading}
+              >
+                {n}곡
+              </button>
+            ))}
+            <input
+              className={`${styles.countInput} ${useCustom ? styles.countInputActive : ''}`}
+              type="text"
+              inputMode="numeric"
+              placeholder="직접 입력"
+              value={customCount}
+              onFocus={handleCustomFocus}
+              onChange={handleCustomChange}
               disabled={loading}
-            >
-              {n}곡
-            </button>
-          ))}
-          <input
-            className={`${styles.countInput} ${useCustom ? styles.countInputActive : ''}`}
-            type="text"
-            inputMode="numeric"
-            placeholder="직접 입력"
-            value={customCount}
-            onFocus={handleCustomFocus}
-            onChange={handleCustomChange}
-            disabled={loading}
-            maxLength={2}
-          />
-          <span className={styles.countMax}>최대 30곡</span>
+              maxLength={2}
+            />
+            <span className={styles.countMax}>최대 30곡</span>
+          </div>
         </div>
       </div>
 

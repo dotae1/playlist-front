@@ -4,6 +4,22 @@
   gap: 14px;
 }
 
+/* ── 공통 필드 블록 ── */
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.fieldLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
 /* ── 1행: 키워드 ── */
 .categoryRow {
   display: flex;
@@ -47,17 +63,7 @@
 /* ── 2행: 곡 수 ── */
 .countRow {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
   justify-content: center;
-}
-
-.countLabel {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
 }
 
 .countButtons {

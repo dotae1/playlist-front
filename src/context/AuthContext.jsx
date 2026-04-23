@@ -43,9 +43,10 @@ export function AuthProvider({ children }) {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const signIn = () => {
+  const signIn = (userData) => {
     localStorage.setItem('isLoggedIn', 'true');
     setIsLoggedIn(true);
+    if (userData) setUser(userData);
   };
 
   const signOut = () => {

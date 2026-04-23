@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { login } from '../api/authApi';
+import { login, checkAuth } from '../api/authApi';
 import { useAuth } from '../context/AuthContext';
 import styles from './AuthPage.module.css';
 
@@ -27,7 +27,8 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(form.loginId, form.password);
-      signIn();
+      const userData = await checkAuth();
+      signIn(userData);
       navigate('/');
     } catch (err) {
       setError(err.message);

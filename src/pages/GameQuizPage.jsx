@@ -263,16 +263,26 @@ export default function GameQuizPage() {
                 <div className={`${styles.resultBadge} ${result?.correct ? styles.correct : styles.wrong}`}>
                   {result?.correct ? '정답!' : '오답'}
                 </div>
-                {!result?.correct && result && (
+                {result && !result.correct && (
                   <div className={styles.answerReveal}>
-                    <p className={styles.answerRow}>
+                    <div className={styles.answerRow}>
                       <span className={styles.answerField}>제목</span>
-                      <span className={styles.answerVal}>{result.title}</span>
-                    </p>
-                    <p className={styles.answerRow}>
+                      <span className={`${styles.answerVal} ${!result.titleCorrect ? styles.answerWrong : styles.answerOk}`}>
+                        {result.title}
+                        {result.titleCorrect
+                          ? <span className={styles.answerTag}>✓ 정답</span>
+                          : <span className={styles.answerTag}>✗ 오답</span>}
+                      </span>
+                    </div>
+                    <div className={styles.answerRow}>
                       <span className={styles.answerField}>아티스트</span>
-                      <span className={styles.answerVal}>{result.artist}</span>
-                    </p>
+                      <span className={`${styles.answerVal} ${!result.artistCorrect ? styles.answerWrong : styles.answerOk}`}>
+                        {result.artist}
+                        {result.artistCorrect
+                          ? <span className={styles.answerTag}>✓ 정답</span>
+                          : <span className={styles.answerTag}>✗ 오답</span>}
+                      </span>
+                    </div>
                   </div>
                 )}
                 <div className={styles.actionRow}>

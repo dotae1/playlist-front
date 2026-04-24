@@ -470,6 +470,23 @@
   font-size: 15px;
   font-weight: 600;
   color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.answerOk {
+  color: #1db954;
+}
+
+.answerWrong {
+  color: #ff5252;
+}
+
+.answerTag {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.8;
 }
 
 .actionRow {
